@@ -5,6 +5,7 @@ import streamlit as st
 import re  # Regular expression for email validation
 import pandas as pd  # For displaying the table
 
+
 # Set page configuration
 st.set_page_config(page_title="Health Assistant",
                    layout="wide",
@@ -16,13 +17,11 @@ working_dir = os.path.dirname(os.path.abspath(__file__))
 # Paths to the saved models
 diabetes_model_path = os.path.join(working_dir, 'saved_models', 'diabetes_model.sav')
 heart_disease_model_path = os.path.join(working_dir, 'saved_models', 'heart_disease_model.sav')
-parkinsons_model_path = os.path.join(working_dir, 'saved_models', 'parkinsons_model.sav')
 
 # Load the models with error handling
 try:
     diabetes_model = pickle.load(open(diabetes_model_path, 'rb'))
     heart_disease_model = pickle.load(open(heart_disease_model_path, 'rb'))
-    parkinsons_model = pickle.load(open(parkinsons_model_path, 'rb'))
 except FileNotFoundError as e:
     st.error(f"Error loading model: {e}. Ensure all models are in the 'saved_models' directory.")
     st.stop()  # Stop further execution
@@ -110,7 +109,6 @@ else:
         selected = option_menu('Multiple Disease Prediction System',
                                ['Diabetes Prediction',
                                 'Heart Disease Prediction',
-                                'Parkinsons Prediction',
                                 'About'],
                                menu_icon='hospital-fill',
                                icons=['activity', 'heart', 'person', 'info-circle'],
@@ -123,54 +121,85 @@ else:
 
     # About Page
     if selected == "About":
-        st.markdown("<h2 style='font-size: 40px; font-weight: bold;'>About Us</h2>", unsafe_allow_html=True)
-        st.markdown("""
-            <style>
-                .about-text {
-                    font-size: 24px;
-                    font-weight: bold;
-                }
-                .about-table {
-                    font-size: 20px;
-                    border: 1px solid black;
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-                .about-table th, .about-table td {
-                    padding: 8px;
-                    text-align: center;
-                }
-                .about-table th {
-                    background-color: #f2f2f2;
-                }
-            </style>
-            <div class="about-text">
-                <p>This Multiple Disease Prediction System was devloped by:</p>
+        st.markdown(
+        """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        .page-container {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://plus.unsplash.com/premium_photo-1702598804322-0451f7b1e99c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+            padding: 20px;
+        }
+
+        .about-container {
+            background-color: rgba(255, 255, 255, 0.85);
+
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .about-header {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-subheader {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .about-section {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        </style>
+        <div class="page-container">
+            <div class="about-container">
+                <div class="about-header">About Us</div>
+                <div class="about-section">
+                    <p>This system is a cutting-edge health assistant designed to predict the likelihood of heart disease and diabetes using user-provided health metrics and medical data. Leveraging advanced machine learning algorithms, it aims to assist users with early detection and actionable insights to encourage preventive measures and better health outcomes.</p>
+                    <p><b>Heart Disease Prediction:</b> This module evaluates critical health metrics, including cholesterol levels, blood pressure, age, and lifestyle factors. By analyzing these inputs, it estimates the user's risk of developing cardiovascular conditions, empowering users to take timely actions.</p>
+                    <p><b>Diabetes Prediction:</b> This module focuses on key indicators such as glucose levels, BMI, family history, and other health parameters. It helps users assess their risk of developing diabetes and encourages proactive management of their health.</p>
+                    <p>Our mission is to provide an intuitive, user-friendly platform that promotes health awareness and encourages timely medical consultations when necessary. This system serves as a supplementary tool for health monitoring and risk assessment.</p>
+                </div>
             </div>
-            <table class="about-table">
-                <tr>
-                    <th>Name</th>
-                    <th>USN</th>
-                </tr>
-                <tr>
-                    <td><b>Abdul Musawwir</b></td>
-                    <td><b>3BR22CS005</b></td>
-                </tr>
-                <tr>
-                    <td><b>Akash G  </b></td>
-                    <td><b>3BR22CS008</b></td>
-                </tr>
-                <tr>
-                    <td><b>Amith Kumar</b></td>
-                    <td><b>3BR22CS011</b></td>
-                </tr>
-                <tr>
-                    <td><b>B V N Shanmukha </b></td>
-                    <td><b>3BR22CS018</b></td>
-                </tr>
-            </table>
-        """, unsafe_allow_html=True)
-  
+        </div>
+
+
+        """,
+        unsafe_allow_html=True
+    )
+
 
     # Diabetes Prediction Page
     if selected == 'Diabetes Prediction':
@@ -225,7 +254,7 @@ else:
                 except ValueError:
                     st.error("Invalid input. Please enter valid numeric values.")
                 except Exception as e:
-                    st.error(f"An error occurred during prediction: {e}")
+                    st.error(f"An error occurred during prediction: {e}")  
 
         st.success(diab_diagnosis)
 
@@ -298,5 +327,3 @@ else:
                     st.error(f"An error occurred during prediction: {e}")
 
         st.success(heart_diagnosis)
-
-    # Parkinson's Prediction Page

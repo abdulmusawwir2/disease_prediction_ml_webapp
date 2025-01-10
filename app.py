@@ -204,49 +204,59 @@ else:
     # Diabetes Prediction Page
     if selected == 'Diabetes Prediction':
         st.title('Diabetes Prediction using ML')
-
-        # getting the input data from the user
+    
+        # Define acceptable ranges and hints for inputs
+        pregnancies_range = "0 to 17"
+        glucose_range = "0 to 200 mg/dL"
+        blood_pressure_range = "0 to 122 mmHg"
+        skin_thickness_range = "0 to 99 mm"
+        insulin_range = "0 to 846 mIU/L"
+        bmi_range = "0 to 67.1 kg/m²"
+        diabetes_pedigree_range = "0.08 to 2.42"
+        age_range = "21 to 81 years"
+    
+        # Getting the input data from the user
         col1, col2, col3 = st.columns(3)
-
+    
         with col1:
-            Pregnancies = st.text_input('Number of Pregnancies')
-
+            Pregnancies = st.text_input(f'Number of Pregnancies (Range: {pregnancies_range})')
+    
         with col2:
-            Glucose = st.text_input('Glucose Level in mg/dL (milligrams per deciliter)')
-
+            Glucose = st.text_input(f'Glucose Level in mg/dL (Range: {glucose_range})')
+    
         with col3:
-            BloodPressure = st.text_input('Blood Pressure value in mmHg (millimeters of mercury)')
-
+            BloodPressure = st.text_input(f'Blood Pressure value in mmHg (Range: {blood_pressure_range})')
+    
         with col1:
-            SkinThickness = st.text_input('Skin Thickness value in mm (millimeters)')
-
+            SkinThickness = st.text_input(f'Skin Thickness value in mm (Range: {skin_thickness_range})')
+    
         with col2:
-            Insulin = st.text_input('Insulin Level in mIU/L (micro International Units per liter)')
-
+            Insulin = st.text_input(f'Insulin Level in mIU/L (Range: {insulin_range})')
+    
         with col3:
-            BMI = st.text_input('BMI value in kg/m² (kilograms per square meter)')
-
+            BMI = st.text_input(f'BMI value in kg/m² (Range: {bmi_range})')
+    
         with col1:
-            DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value')
-
+            DiabetesPedigreeFunction = st.text_input(f'Diabetes Pedigree Function (Range: {diabetes_pedigree_range})')
+    
         with col2:
-            Age = st.text_input('Age of the Person in years')
-
-        # code for Prediction
+            Age = st.text_input(f'Age of the Person in years (Range: {age_range})')
+    
+        # Code for Prediction
         diab_diagnosis = ''
-
-        # creating a button for Prediction
+    
+        # Creating a button for Prediction
         if st.button('Diabetes Test Result'):
             user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
                           BMI, DiabetesPedigreeFunction, Age]
-
+    
             if check_empty_inputs(user_input):
                 st.error("Please fill in all the fields before submitting.")
             else:
                 try:
                     user_input = [float(x) for x in user_input]
                     diab_prediction = diabetes_model.predict([user_input])
-
+    
                     if diab_prediction[0] == 1:
                         diab_diagnosis = 'The person is diabetic'
                     else:
@@ -254,76 +264,93 @@ else:
                 except ValueError:
                     st.error("Invalid input. Please enter valid numeric values.")
                 except Exception as e:
-                    st.error(f"An error occurred during prediction: {e}")  
-
+                    st.error(f"An error occurred during prediction: {e}")
+    
         st.success(diab_diagnosis)
+
+
+
+
 
     # Heart Disease Prediction Page
     if selected == 'Heart Disease Prediction':
         st.title('Heart Disease Prediction using ML')
-
+    
         col1, col2, col3 = st.columns(3)
-
+    
         with col1:
-            age = st.text_input('Age in years')
-
+            age = st.text_input('Age in years (1 - 120)')
         with col2:
-            sex = st.text_input('Sex')
-
+            sex = st.text_input('Sex (0 = female, 1 = male)')
         with col3:
-            cp = st.text_input('Chest Pain types')
-
+            cp = st.text_input('Chest Pain types (0 to 3)')
         with col1:
-            trestbps = st.text_input('Resting Blood Pressure in mmHg (millimeters of mercury)')
-
+            trestbps = st.text_input('Resting Blood Pressure in mmHg (90 - 200)')
         with col2:
-            chol = st.text_input('Serum Cholestoral in mg/dl (milligrams per deciliter)')
-
+            chol = st.text_input('Serum Cholesterol in mg/dl (120 - 600)')
         with col3:
-            fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl  (milligrams per deciliter)')
-
+            fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl (0 = False, 1 = True)')
         with col1:
-            restecg = st.text_input('Resting Electrocardiographic results')
-
+            restecg = st.text_input('Resting Electrocardiographic results (0 to 2)')
         with col2:
-            thalach = st.text_input('Maximum Heart Rate achieved in  beats per minute (bpm)' )
-
+            thalach = st.text_input('Maximum Heart Rate achieved in bpm (60 - 220)')
         with col3:
-            exang = st.text_input('Exercise Induced Angina ')
-
+            exang = st.text_input('Exercise Induced Angina (0 = No, 1 = Yes)')
         with col1:
-            oldpeak = st.text_input('ST depression induced by exercise in mm(millimeters)')
-
+            oldpeak = st.text_input('ST depression induced by exercise in mm (0.0 - 6.0)')
         with col2:
-            slope = st.text_input('Slope of the peak exercise ST segment')
-
+            slope = st.text_input('Slope of the peak exercise ST segment (0 to 2)')
         with col3:
-            ca = st.text_input('Major vessels colored by flourosopy')
-
+            ca = st.text_input('Major vessels colored by fluoroscopy (0 to 4)')
         with col1:
-            thal = st.text_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
-
-        # code for Prediction
+            thal = st.text_input('Thal: 0 = normal; 1 = fixed defect; 2 = reversible defect')
+    
+        # Code for Prediction
         heart_diagnosis = ''
-
-        # creating a button for Prediction
+    
+        # Create a button for Prediction
         if st.button('Heart Disease Test Result'):
             user_input = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
-
+    
             if check_empty_inputs(user_input):
                 st.error("Please fill in all the fields before submitting.")
             else:
                 try:
+                    # Convert inputs to float and validate ranges
                     user_input = [float(x) for x in user_input]
+    
+                    # Define valid ranges
+                    valid_ranges = {
+                        'age': (1, 120),
+                        'sex': (0, 1),
+                        'cp': (0, 3),
+                        'trestbps': (90, 200),
+                        'chol': (120, 600),
+                        'fbs': (0, 1),
+                        'restecg': (0, 2),
+                        'thalach': (60, 220),
+                        'exang': (0, 1),
+                        'oldpeak': (0.0, 6.0),
+                        'slope': (0, 2),
+                        'ca': (0, 4),
+                        'thal': (0, 2),
+                    }
+    
+                    # Validate inputs
+                    for idx, (key, (min_val, max_val)) in enumerate(valid_ranges.items()):
+                        if not (min_val <= user_input[idx] <= max_val):
+                            st.error(f"Invalid value for {key}. Must be between {min_val} and {max_val}.")
+                            raise ValueError(f"{key} out of range")
+    
+                    # Prediction
                     heart_prediction = heart_disease_model.predict([user_input])
-
                     if heart_prediction[0] == 1:
                         heart_diagnosis = 'The person is having heart disease'
                     else:
                         heart_diagnosis = 'The person does not have any heart disease'
                 except ValueError:
-                    st.error("Invalid input. Please enter valid numeric values.")
+                    st.error("Invalid input. Please enter valid numeric values within the specified ranges.")
                 except Exception as e:
                     st.error(f"An error occurred during prediction: {e}")
-
-        st.success(heart_diagnosis)
+    
+            st.success(heart_diagnosis)
